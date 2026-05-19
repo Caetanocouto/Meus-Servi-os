@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CC Criative Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --deep: #0D1B2A;
+    --mid: #1A2E44;
+    --accent: #2E6DA4;
+    --white: #F8F5EE;
+    --soft: #E8E0D0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === BACKGROUND === */
+  .bg-texture {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(46,109,164,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      var(--deep);
+    z-index: 0;
+  }
+
+  .noise {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* === WRAPPER === */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  /* === HEADER BADGE === */
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--deep);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  /* === HERO === */
+  .hero {
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s ease 0.1s both;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 9vw, 52px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .hero-name span {
+    color: var(--gold);
+    display: block;
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(248,245,238,0.55);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 20px;
+  }
+
+  .hero-tagline {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(248,245,238,0.75);
+    line-height: 1.7;
+    max-width: 340px;
+  }
+
+  /* === SERVICOS === */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    animation: fadeDown 0.7s ease 0.2s both;
+  }
+
+  .services {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 44px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .service-card:hover {
+    background: rgba(201,168,76,0.10);
+    border-color: rgba(201,168,76,0.6);
+    transform: translateX(5px);
+    box-shadow: 0 4px 24px rgba(201,168,76,0.10);
+  }
+
+  .service-card:active {
+    transform: translateX(2px) scale(0.99);
+    background: rgba(201,168,76,0.16);
+  }
+
+  .service-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .service-info {
+    flex: 1;
+  }
+
+  .service-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 5px;
+  }
+
+  .service-info p {
+    font-size: 12.5px;
+    color: rgba(248,245,238,0.55);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .service-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--deep);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 2px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .service-card:hover .service-btn {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .service-card-static {
+    cursor: default;
+  }
+
+  .service-card-static:hover {
+    transform: none;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+  }
+
+  .service-btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1.5px solid var(--gold);
+    font-weight: 700;
+  }
+
+  .service-btn-outline:hover {
+    background: rgba(201,168,76,0.12);
+    opacity: 1;
+  }
+
+  /* === WHY ME === */
+  .why {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 24px 22px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .why h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .why-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .why-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(248,245,238,0.7);
+  }
+
+  .why-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* === CTA === */
+  .cta-block {
+    text-align: center;
+    animation: fadeUp 0.8s ease 0.5s both;
+  }
+
+  .cta-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(248,245,238,0.4);
+    margin-bottom: 14px;
+  }
+
+  .cta-contact {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .cta-email {
+    font-size: 13px;
+    color: rgba(248,245,238,0.45);
+    margin-bottom: 28px;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--deep);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .cta-btn:hover {
+    opacity: 0.88;
+    transform: translateY(-2px);
+  }
+
+  /* === FOOTER LINE === */
+  .footer-line {
+    margin-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(248,245,238,0.2);
+    letter-spacing: 1px;
+    animation: fadeUp 0.8s ease 0.6s both;
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === GOLD LINE ORNAMENT === */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    animation: fadeDown 0.7s ease 0.15s both;
+  }
+  .ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4)); }
+  .ornament-line.r { background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent); }
+  .ornament-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<div class="bg-texture"></div>
+<div class="noise"></div>
+
+<div class="wrapper">
+
+  <div class="badge">✦ Serviços Profissionais</div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-name"><span>CC Creative Studio</span>
+    </div>
+    <div class="hero-sub">Designer & Especialista em Documentos</div>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">
+      Transformo a sua história em documentos que impressionam. CV personalizados, cartas elegantes e convites que emocionam — tudo com toque profissional.
+    </p>
+  </div>
+
+  <!-- ORNAMENT -->
+  <div class="ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-dot"></div>
+    <div class="ornament-line r"></div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="section-title">✦ O que ofereço</div>
+  <div class="services">
+
+    <!-- CV card: dois botões -->
+    <div class="service-card service-card-static">
+      <div class="service-icon">📄</div>
+      <div class="service-info">
+        <h3>CV Personalizado & Profissional</h3>
+        <p>Currículo moderno, elegante e adaptado ao seu perfil. Design que chama atenção e estrutura que conquista recrutadores.</p>
+        <div class="btn-group">
+          <a class="service-btn" href="https://wa.me/258855620233?text=Olá%20Caetano!%20Gostaria%20de%20solicitar%20apenas%20um%20*CV%20Personalizado%20e%20Profissional*.%20Pode%20me%20informar%20sobre%20o%20processo%20e%20os%20valores%3F%20Obrigado!" target="_blank">📄 Só o CV</a>
+          <a class="service-btn service-btn-outline" href="https://wa.me/258855620233?text=Olá%20Caetano!%20Gostaria%20de%20solicitar%20um%20*CV%20Personalizado%20%2B%20Carta%20de%20Apresentação*%20em%20conjunto.%20Pode%20me%20informar%20sobre%20o%20processo%20e%20os%20valores%3F%20Obrigado!" target="_blank">📄✉️ CV + Carta</a>
+        </div>
+      </div>
+    </div>
+
+    <a class="service-card" href="https://wa.me/258855620233?text=Olá%20Caetano!%20Preciso%20de%20uma%20*Carta%20de%20Apresentação%20Profissional*%20para%20complementar%20o%20meu%20CV.%20Pode%20me%20informar%20sobre%20o%20processo%20e%20os%20valores%3F%20Obrigado!" target="_blank">
+      <div class="service-icon">✉️</div>
+      <div class="service-info">
+        <h3>Carta de Apresentação</h3>
+        <p>Texto profissional que complementa o seu CV, destaca as suas competências e causa uma primeira impressão inesquecível.</p>
+        <span class="service-btn">💬 Solicitar agora</span>
+      </div>
+    </a>
+
+    <a class="service-card" href="https://wa.me/258855620233?text=Olá%20Caetano!%20Gostaria%20de%20encomendar%20um%20*Convite%20de%20Aniversário*%20personalizado.%20Pode%20me%20informar%20sobre%20os%20estilos%20disponíveis%20e%20os%20valores%3F%20Obrigado!" target="_blank">
+      <div class="service-icon">🎂</div>
+      <div class="service-info">
+        <h3>Convite de Aniversário</h3>
+        <p>Convites criativos e personalizados que refletem o estilo da celebração. Digital ou para impressão.</p>
+        <span class="service-btn">💬 Solicitar agora</span>
+      </div>
+    </a>
+
+    <a class="service-card" href="https://wa.me/258855620233?text=Olá%20Caetano!%20Estou%20a%20planear%20o%20meu%20casamento%20e%20gostaria%20de%20encomendar%20um%20*Convite%20de%20Casamento*%20especial%20e%20personalizado.%20Pode%20me%20apresentar%20as%20opções%20e%20os%20valores%3F%20Obrigado!" target="_blank">
+      <div class="service-icon">💍</div>
+      <div class="service-info">
+        <h3>Convite de Casamento</h3>
+        <p>Design romântico e sofisticado para o dia mais especial. Elegância em cada detalhe do convite.</p>
+        <span class="service-btn">💬 Solicitar agora</span>
+      </div>
+    </a>
+
+    <a class="service-card" href="https://wa.me/258855620233?text=Olá%20Caetano!%20Tenho%20um%20pedido%20especial%20e%20gostaria%20de%20saber%20se%20pode%20ajudar.%20Pode%20me%20dizer%20que%20*outros%20serviços*%20oferece%20e%20os%20respectivos%20valores%3F%20Obrigado!" target="_blank">
+      <div class="service-icon">🎨</div>
+      <div class="service-info">
+        <h3>Outros Serviços</h3>
+        <p>Cartas formais, certificados, cartões de visita, flyers e muito mais. Fale comigo sobre o que precisa.</p>
+        <span class="service-btn">💬 Solicitar agora</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- WHY -->
+  <div class="why">
+    <h2>Por que escolher‑me?</h2>
+    <ul class="why-list">
+      <li>Formação em Informática com especialidade em Ensino</li>
+      <li>Domínio em Word, Excel, PowerPoint e ferramentas digitais</li>
+      <li>Experiência em formatação ABNT/APA e design didático</li>
+      <li>Entrega rápida e com atenção a cada detalhe</li>
+      <li>Atendimento personalizado — o seu projeto, a sua identidade</li>
+      <li>Confidencialidade e sigilo profissional garantidos</li>
+    </ul>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <div class="cta-label">Entre em contacto agora</div>
+    <div class="cta-contact">+258 85 56 20 233</div>
+    <div class="cta-email">caetanocouto42@gmail.com</div>
+    <a class="cta-btn" href="https://wa.me/258855620233" target="_blank">💬 Falar no WhatsApp</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-line">
+    © 2026 Caetano Couto João Pedro · Serviços Criativos & Profissionais
+  </div>
+
+</div>
+</body>
+</html>
